@@ -34,8 +34,9 @@ module RedHillConsulting::Core::ActiveRecord::ConnectionAdapters
       references_table_name = quote_table_name(references_table_name)
       column_names = column_names.collect { |name| quote_column_name(name) }
       references_column_names = references_column_names.collect { |name| quote_column_name(name) }
+      name = options[:name].blank? ? nil : quote_column_name(options[:name])
 
-      foreign_key = ForeignKeyDefinition.new(options[:name], table_name, column_names, ActiveRecord::Migrator.proper_table_name(references_table_name), references_column_names, options[:on_update], options[:on_delete], options[:deferrable])
+      foreign_key = ForeignKeyDefinition.new(name, table_name, column_names, ActiveRecord::Migrator.proper_table_name(references_table_name), references_column_names, options[:on_update], options[:on_delete], options[:deferrable])
       execute "ALTER TABLE #{table_name} ADD #{foreign_key}"
     end
 
